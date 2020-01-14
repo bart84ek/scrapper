@@ -1,0 +1,21 @@
+Project: where_is_my_ride
+
+Values:
+  logLevel: "WARN" # "DEBUG"
+
+scrap: |
+  oya run scrapOtomoto $@
+  oya run scrapAllegro $@
+  oya run scrapOlx $@
+
+scrapOtomoto: |
+  echo "Scrapping Otomoto.pl search=$1 $2"
+  scrapy crawl -L ${Oya[logLevel]} otomoto -a brand=$1 -a model=$2
+
+scrapAllegro: |
+  echo "Scrapping Allegro.pl search=$1 $2"
+  scrapy crawl -L ${Oya[logLevel]} allegro -a brand=$1 -a model=$2
+
+scrapOlx: |
+  echo "Scrapping Olx.pl search=$1 $2"
+  scrapy crawl -L ${Oya[logLevel]} olx -a brand=$1 -a model=$2

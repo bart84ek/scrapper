@@ -5,19 +5,25 @@ import re
 
 class AllegroSpider(scrapy.Spider):
     name = 'allegro'
-    url = 'https://allegro.pl/kategoria/samochody-osobowe-4029?string=SEARCH'
+    url = 'https://allegro.pl/kategoria/samochody-osobowe-4029?string=BRAND%20MODEL'
 
     def start_requests(self):
-        search = getattr(self, 'search', None)
-        if search is not None:
-            url = self.url.replace('SEARCH', search)
+        brand = getattr(self, 'brand', None)
+        model = getattr(self, 'model', None)
+        url = self.url
+
+        if brand is not None:
+            url = url.replace('BRAND', brand)
+
+        if model is not None:
+            url = url.replace('MODEL', model)
+
         yield scrapy.Request(url, self.parse)
 
     def parse(self, response):
         for auction in response.css('article[data-item="true"]'):
             url = auction.css('h2').css('a::attr(href)').get()
             yield response.follow(url, callback=self.parse_details)
-            # break
 
         next_page = response.css('a[data-role="next-page"]::attr(href)').get()
         if next_page is not None:

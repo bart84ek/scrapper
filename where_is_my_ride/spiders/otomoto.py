@@ -3,17 +3,23 @@ import scrapy
 
 class OtomotoSpider(scrapy.Spider):
     name = 'otomoto'
-    url = 'https://www.otomoto.pl/osobowe/nissan/patrol/?search%5Border%5D=created_at%3Adesc&search%5Bbrand_program_id%5D%5B0%5D=&search%5Bcountry%5D='
+    url = 'https://www.otomoto.pl/osobowe/BRAND/MODEL/?search%5Border%5D=created_at%3Adesc&search%5Bbrand_program_id%5D%5B0%5D=&search%5Bcountry%5D='
 
     custom_settings = {
        'USER_AGENT': "Mozilla/5.0 (X11; Linux x86_64) "
     }
 
     def start_requests(self):
-        search = getattr(self, 'search', None)
+        brand = getattr(self, 'brand', None)
+        model = getattr(self, 'model', None)
+        url = self.url
 
-        if search is not None:
-            url = self.url.replace('SEARCH', search)
+        if brand is not None:
+            url = url.replace('BRAND', brand)
+
+        if model is not None:
+            url = url.replace('MODEL', model)
+
         yield scrapy.Request(url, self.parse)
 
     def parse(self, response):

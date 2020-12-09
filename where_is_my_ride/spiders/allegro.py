@@ -34,13 +34,13 @@ class AllegroSpider(scrapy.Spider):
             'title': response.css('h1::text').get(),
             'user': response.css('a[data-analytics-click-value="sellerLogin"]::text').get(),
             'price': response.css('div[aria-label*="cena"]::attr(aria-label)').get(),
-            'till': response.css('time::attr(datetime)').get(),
             'image': response.css('meta[itemprop="image"]::attr(content)').get(),
             'category': response.css('div[data-role="breadcrumb-item"] span[itemprop="name"]::text').getall(),
             'parameters': response.css('a[name="parameters"] + div').css('li *::text').getall(),
-            'description': "\n".join(response.css('a[name="container-description"] + div').css('*::text').getall())
+            'description': "\n".join(response.css('a[name="container-description"] + div').css('*::text').getall()),
+            'till': response.css('time::attr(datetime)').get(),
         }
 
-    def remove_html_tags(self, data):
-        p = re.compile(r'<.*?>')
-        return p.sub('', data)
+    # def remove_html_tags(self, data):
+    #     p = re.compile(r'<.*?>')
+    #     return p.sub('', data)

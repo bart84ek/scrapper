@@ -10,12 +10,15 @@ scrap: |
 
 scrapOtomoto: |
   echo "Scrapping Otomoto.pl search=$1 $2"
-  scrapy crawl -L ${Oya[logLevel]} otomoto -a brand=$1 -a model=$2
+  scrapy crawl -L ${Oya[logLevel]} otomoto -a brand=$1 -a model=$2 -o otomoto.json
 
 scrapAllegro: |
   echo "Scrapping Allegro.pl search=$1 $2"
-  scrapy crawl -L ${Oya[logLevel]} allegro -a brand=$1 -a model=$2
+  scrapy crawl -L ${Oya[logLevel]} allegro -a brand=$1 -a model=$2 -o allegro.json
 
 scrapOlx: |
   echo "Scrapping Olx.pl search=$1 $2"
-  scrapy crawl -L ${Oya[logLevel]} olx -a brand=$1 -a model=$2
+  scrapy crawl -L ${Oya[logLevel]} olx -a brand=$1 -a model=$2 -o olx.json
+
+clean: |
+  rm otomoto.json allegro.json olx.json
